@@ -141,8 +141,7 @@
 									<thead>
 										<tr>
 											<th>#</th>
-											<th class="text-center">Producto</th>
-											<th class="text-center">Unidad</th>
+											<th class="text-center">Producto</th>											
 											<th class="text-center">Cantidad</th>
 											<th class="text-center">Precio Unitario</th>
 											<th class="text-center">Total</th>

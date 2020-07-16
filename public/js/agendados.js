@@ -98,6 +98,9 @@ const saveInicio = () => {
         swal('Datos Básicos', 'La Fecha No Puede ser Menor a la Fecha Actual', 'warning');
 
 
+    } else if (!$('#weight').val().length > 0) {
+        swal('Datos Básicos', 'Campo Peso Final', 'warning');
+
     } else if (!$('#hour').val().length > 0) {
         swal('Datos Básicos', 'Campo Hora Está Vacío', 'warning');
 

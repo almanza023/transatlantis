@@ -17,6 +17,7 @@ class OrderDelivery extends Model
         'id_order',
         'status',
         'hour',
+        'weight',
         'observation',
         'date'
     ];

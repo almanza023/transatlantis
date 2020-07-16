@@ -576,6 +576,7 @@ class OrderController extends Controller
             $order->status=$request->status;
             $order->date=$request->date;
             $order->hour=$request->hour;
+            $order->weight=$request->weight;
             $order->observation=$request->observation;
             $order->save();
     
@@ -742,19 +743,52 @@ class OrderController extends Controller
     public function editSchedule($id){
       
         $schedule=OrderSchedule::where('id_order',$id)->get();
-        return view('order.edit-schedule', compact('schedule'));
+       
+        $vehicles = $this->repository->getVehiclesActiveWithDriver();
+        $details=OrderScheduleDetail::where('id_order_schedule', $schedule[0]->id_order_schedule)->get();
+       
+        return view('order.edit-schedule', compact('schedule', 'vehicles', 'details'));
     }
 
     public function updateSchedule(Request $request){
       
-
-        $exito = OrderSchedule::where('id_order',$request->id_order)
-            ->update(['date_departure' => $request->date_departure, 'time_departure'=>$request->time_departure])  ;
         
-        if($exito){
+            $drivers=$request->driver;
+            $id_details=$request->id_order_schedule_details;
+
+           
+        
+            DB::beginTransaction();
+            try {
+            $exito = OrderSchedule::where('id_order',$request->id_order)
+                ->update(['date_departure' => $request->date_departure, 'time_departure'=>$request->time_departure])  ;
+    
+            for($i=0; $i<count($drivers); $i++){
+                if($drivers[$i]==0){
+               
+                }else {
+                    $partes = explode("-", $drivers[$i]);
+                    $placa=$partes[0];
+                    $nid_driver=$partes[1];
+                    $detail=OrderScheduleDetail::find($id_details[$i]);
+                    $detail->placa=$placa;
+                    $detail->nid_driver=$nid_driver;
+                    $detail->save();
+                }
+
+            }
+              
+            
+            
+            DB::commit();
             return redirect()->route('orders.index')->with('success', 'CAMBIO DE FECHA DE ENTREGA REALIZADA EXITOSAMENTE');
-        }
-        return redirect()->route('orders.index')->with('warning', 'ERROR AL ACTULIZAR CAMBIO DE FECHA DE ENTREGA EXITOSAMENTE');
+    
+            } catch (\Exception $ex) {
+                DB::rollback();
+                return response()->json(['warning' => $ex->getMessage()]);    
+                return redirect()->route('orders.index')->with('warning', 'ERROR AL ACTULIZAR CAMBIO DE FECHA DE ENTREGA EXITOSAMENTE');  
+            }     
+      
 
     }
 

@@ -13,7 +13,7 @@
 @include('layouts.success')
 
 <div class="section-wrapper">
-	<div class="row clearfix">
+	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="card">
 				<div class="card-header bg-warning">
@@ -32,21 +32,24 @@
 			 </div>
 			 <hr>
 					<div id="datos">					
-					<div class="table-wrapper" id="id_table">
+					<div class="table-responsive" id="id_table">
 						<div id="tabla_agotados">
 							@include('ajax.table-agendados')
 						</div>
+					
 					</div>
 				</div>
 				</div>
 			</div>
+			@include('modals.modal-entrega')
+			@include('modals.modal-inicio-entrega')
+			@include('modals.modal-empty')
 		</div>
 	</div>
+
 </div>
 
-@include('modals.modal-entrega')
-@include('modals.modal-inicio-entrega')
-@include('modals.modal-empty')
+
 
 @stop
 
