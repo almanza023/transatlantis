@@ -1,7 +1,7 @@
 <div class="modal fade" id="modalInicio" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-body" style="width: 500px">	
+			<div class="modal-body">	
 
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -66,7 +66,7 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name_category_e">Peso: </label>
+                                            <label for="name_category_e">Peso Final: </label>
                                         </div>
                                         <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">

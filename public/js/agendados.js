@@ -144,6 +144,9 @@ const saveEntrega = () => {
     } else if (fecha < fechaA) {
         swal('Datos Básicos', 'La Fecha No Puede ser Menor a la Fecha Actual', 'warning');
 
+    } else if (!$('#weight1').val().length > 0) {
+        swal('Datos Básicos', 'Campo Peso Final', 'warning');
+
     } else if (!$('#hour1').val().length > 0) {
         swal('Datos Básicos', 'Campo Hora Está Vacío', 'warning');
 

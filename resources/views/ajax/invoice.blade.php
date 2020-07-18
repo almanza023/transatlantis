@@ -35,6 +35,19 @@
      </div>
      <div class="row ">
         <div class="col-lg-12 col-md-2 col-sm-4 col-xs-5 form-control-label">
+            <label for="time_payment">Peso Final: </label>
+        </div>
+        <div class="col-lg-12 col-md-10 col-sm-8 col-xs-7">
+            <div class="form-group">
+                <div class="form-line">
+                    <input type="number" value="{{ $peso[0]->weight }}" class="form-control" id="peso" name="peso" readonly >                   
+                </div>
+            </div>
+        </div>
+        
+       </div>
+     <div class="row ">
+        <div class="col-lg-12 col-md-2 col-sm-4 col-xs-5 form-control-label">
             <label for="time_payment">Valor de Descuento: </label>
         </div>
         <div class="col-lg-12 col-md-10 col-sm-8 col-xs-7">
@@ -68,6 +81,24 @@
          </div>
      </div>
     </div>
+
+    <div class="row ">
+        <div class="col-lg-12 col-md-2 col-sm-4 col-xs-5 form-control-label">
+            <label for="time_payment">Tipo de Cobro: </label>
+        </div>
+        <div class="col-lg-12 col-md-10 col-sm-8 col-xs-7">
+            <div class="form-group">
+                <div class="form-line">
+                   
+                   <select name="type" id="type" class="form-control">
+                       <option value="1">Normal</option>
+                       <option value="2">Por Peso</option>
+                   </select>
+                   
+                </div>
+            </div>
+        </div>
+       </div>
 
     <div class="row ">
      <div class="col-lg-12 col-md-2 col-sm-4 col-xs-5 form-control-label">

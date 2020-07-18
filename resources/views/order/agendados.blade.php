@@ -36,20 +36,17 @@
 						<div id="tabla_agotados">
 							@include('ajax.table-agendados')
 						</div>
-					
 					</div>
 				</div>
 				</div>
 			</div>
-			@include('modals.modal-entrega')
-			@include('modals.modal-inicio-entrega')
-			@include('modals.modal-empty')
 		</div>
 	</div>
-
 </div>
 
-
+@include('modals.modal-entrega')
+@include('modals.modal-inicio-entrega')
+@include('modals.modal-empty')
 
 @stop
 

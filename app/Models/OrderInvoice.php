@@ -17,6 +17,7 @@ class OrderInvoice extends Model
         'id_order',
         'id_admin',
         'total',
+        'type',
         'observation',
         'date'
     ];

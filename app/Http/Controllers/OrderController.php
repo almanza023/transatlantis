@@ -531,7 +531,7 @@ class OrderController extends Controller
     public function getFacturados()
     {
         
-        if(auth()->user()->hasRole('regular')){
+        if(auth()->user()->hasRole('regular') || auth()->user()->hasRole('super-admin')){
            
             $orders=Order::StatusCotizacion(9)->get();
             
@@ -601,6 +601,7 @@ class OrderController extends Controller
             $order->id_order=$request->order_id;
             $order->status=$request->status1;
             $order->date=$request->date3;
+            $order->weight=$request->weight1;
             $order->hour=$request->hour1;
             $order->observation=$request->observation1;
             $order->save();
@@ -643,6 +644,7 @@ class OrderController extends Controller
         $order= new OrderInvoice();
         $order->id_order=$request->id_order;
         $order->id_admin=$request->id_admin;
+        $order->type=$request->type;
         $order->total=$request->total;
         $order->descuento=$request->discount;
         $order->valor=$request->total_fact;
@@ -797,7 +799,11 @@ class OrderController extends Controller
         $total=DB::select("SELECT o.id_order, o.discount AS descuento,  SUM((od.unit_price * od.amount)) AS total FROM orders o
         INNER JOIN order_details od ON o.id_order=od.id_order
         WHERE o.id_order=?", [$id]);
-        return response()->view('ajax.invoice', compact('total'));
+
+        $peso=OrderDelivery::where('id_order', $id)
+        ->where('status', '1')
+        ->get();
+        return response()->view('ajax.invoice', compact('total', 'peso'));
 
       
     }
