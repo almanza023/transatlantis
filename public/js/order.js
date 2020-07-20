@@ -148,18 +148,24 @@ const warning = (mensaje) => {
 
 const addItems = (tr) => {
     let form = $('#form_items');
-    let product = $('#id_product-999').val();
+    let products = $('#id_product-999').val();
+
+    var product = products.split("-")[0];
+    var unity = products.split("-")[1];
+    let porcentaje = $('#porcentaje').val();
+
+
     let amount = $('#amount-999').val();
     let price = $('#unit_price-999').val();
 
     if (validatedItems(product, amount, price)) {
         if (tr != 0) {
             deleteItem(tr);
-            addTable(tr, product, amount, price);
+            addTable(tr, product, unity, porcentaje, amount, price);
         } else {
 
             x++;
-            addTable(x, product, amount, price);
+            addTable(x, product, unity, porcentaje, amount, price);
         }
         form[0].reset();
         $('#id_product-999').val('');
@@ -173,13 +179,14 @@ const addItems = (tr) => {
 }
 
 
-const addTable = (x, product, amount, price) => {
+const addTable = (x, product, unity, porcentaje, amount, price) => {
     let total = amount * price;
     total_factura += total;
     let name_producto = nameProduct(product);
     let htmlTags = '<tr id="item_' + x + '">' +
         '<td>' + x + '</td>' +
         '<td class="text-center">' + name_producto + '</td>' +
+        '<td class="text-center">' + unity + '</td>' +
         '<td class="text-center">' + amount + '</td>' +
         '<td class="text-center">' + formatterPeso.format(price) + '</td>' +
         '<td class="text-center">' + formatterPeso.format(total) +
@@ -191,7 +198,7 @@ const addTable = (x, product, amount, price) => {
 
     $('#total_items').val('Total: ' + formatterPeso.format(total_factura));
 
-    $('#clonar').append(cloneInputs(x, product, amount, price, total));
+    $('#clonar').append(cloneInputs(x, product, porcentaje, amount, price, total));
 
 
 }
@@ -483,14 +490,16 @@ const clearSelectMunicipalities = () => {
     $("#municipality_customer_new").selectpicker("render");
 }
 
-const cloneInputs = (x, product, amount, price, total) => {
+const cloneInputs = (x, product, porcentaje, amount, price, total) => {
 
     return "<div id='clone-" + x + "'>" +
 
         "<input type='hidden' name='id_product[]' id='id_product-" + x + "' value=" + product + ">" +
         "<input type='hidden' name='amount[]' id='amount-" + x + "' value=" + amount + ">" +
         "<input type='hidden' name='unit_price[]' id='unit_price-" + x + "' value=" + price + ">" +
+        "<input type='hidden' name='porcentage_id[]' id='porcentage_id-" + x + "' value=" + porcentaje + ">" +
         "<input type='hidden' id='total_item-" + x + "' value=" + total + ">" +
+
 
         "</div>";
 }

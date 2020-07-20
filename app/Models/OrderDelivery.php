@@ -15,10 +15,13 @@ class OrderDelivery extends Model
 
     protected $fillable = [
         'id_order',
+        'placa',
+        'nid_driver',
         'status',
         'hour',
         'weight',
         'observation',
+        'ticket',
         'date'
     ];
 

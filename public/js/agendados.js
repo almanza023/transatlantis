@@ -8,10 +8,30 @@ $(function() {
     $('#modalEntrega').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget)
         var id = button.data('id')
+        var placa = button.data('placa')
+        var nid = button.data('nid')
+        var type = button.data('type')
         var status = button.data('status')
         var modal = $(this)
         modal.find('.modal-body #order_id').val(id);
+        modal.find('.modal-body #type_invoice').val(type);
+        modal.find('.modal-body #placa1').val(placa);
+        modal.find('.modal-body #nid_driver1').val(nid);
 
+        if (type == 1) {
+            $('#resultado').hide();
+        } else {
+            $('#resultado').show();
+        }
+        var html = "";
+
+        $.get("products/order", { id: id, placa: placa, nid: nid }, function(data) {
+            $.each(data, function(i, item) {
+                html += "<option value=" + item.id_product + ">" + item.name_product + "</option>"
+                console.log(item);
+            });
+            $('#id_product').html(html);
+        });
 
     });
 
@@ -24,7 +44,22 @@ $(function() {
 
     });
 
+    $('#status1').on('change', function() {
+
+        if (this.value == 2) {
+            $('#mostrarTicket').hide();
+        } else {
+            $('#mostrarTicket').show();
+        }
+
+
+    });
+
+
+
 });
+
+
 
 const clickBtnFilter3 = () => {
     $('#btn_filter3').click(function(e) {
@@ -98,9 +133,6 @@ const saveInicio = () => {
         swal('Datos Básicos', 'La Fecha No Puede ser Menor a la Fecha Actual', 'warning');
 
 
-    } else if (!$('#weight').val().length > 0) {
-        swal('Datos Básicos', 'Campo Peso Final', 'warning');
-
     } else if (!$('#hour').val().length > 0) {
         swal('Datos Básicos', 'Campo Hora Está Vacío', 'warning');
 
@@ -137,15 +169,14 @@ const saveEntrega = () => {
     let fechaA = $('#dateAA').val();
     let id = $('#order_id').val();
     let form = $('#form_create1');
+
+
     if (!Number($('#status1').val()) > 0) {
         swal('Datos Básicos', 'Debe Seleccionar Un Estado', 'warning');
     } else if (!$('#date3').val().length > 0) {
         swal('Datos Básicos', 'Debe Seleccionar Una Fecha', 'warning');
     } else if (fecha < fechaA) {
         swal('Datos Básicos', 'La Fecha No Puede ser Menor a la Fecha Actual', 'warning');
-
-    } else if (!$('#weight1').val().length > 0) {
-        swal('Datos Básicos', 'Campo Peso Final', 'warning');
 
     } else if (!$('#hour1').val().length > 0) {
         swal('Datos Básicos', 'Campo Hora Está Vacío', 'warning');
@@ -160,8 +191,14 @@ const saveEntrega = () => {
                     warning(data.warning);
                 } else {
                     success(data.success)
-                    updateRow('Entregado', id);
-                    $("#modalEntrega").modal('hide'); //ocultamos el modal
+
+                    if ($('#status1').val() == 1) {
+                        $("#modalEntrega").modal('hide'); //ocultamos el modal
+                        updateRow('Entregado', id);
+                    } else {
+                        $("#modalEntrega").modal('hide'); //ocultamos el modal
+                        updateRow('Entregado Parcialmente', id);
+                    }
                     form[0].reset();
 
                 }
@@ -193,6 +230,14 @@ const updateRow = (status, id) => {
     if (status == "Entregado") {
         $('#td-' + id).addClass('tx-bold col-green');
         $('#btnentrega-' + id).hide();
+        $('#btninicio-' + id).hide();
+        $('#modalInicio').modal('hide');
+
+    }
+
+    if (status == "Entregado Parcialmente") {
+        $('#td-' + id).addClass('txt-bold col-blue');
+        $('#btnentrega-' + id).show();
         $('#btninicio-' + id).hide();
         $('#modalInicio').modal('hide');
 

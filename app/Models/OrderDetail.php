@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class OrderDetail extends Model
 {
@@ -14,6 +15,7 @@ class OrderDetail extends Model
         'id_order',
         'id_product',
         'amount',
+        'percentage',
         'unit_price'
     ];
 
@@ -34,6 +36,16 @@ class OrderDetail extends Model
         return $this->belongsToMany('App\Models\Provider', 'purchase_order_details', 'id_order_detail', 'nit')
             ->withPivot('amount', 'cost', 'nit','id_order_detail', 'id_purchase')
             ->withTimestamps();
+    }
+
+    public static function getProductsOrder($id){
+        return DB::table('orders as o')
+        ->join('order_details as od', 'o.id_order', '=', 'od.id_order')
+        ->join('products as p', 'od.id_product', '=', 'p.id_product')
+        ->select('p.id_product', 'p.name_product')
+        ->where('o.id_order', $id)
+        ->get();
+
     }
     
 }

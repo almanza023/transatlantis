@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Municipality;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\OrderSchedule;
 use App\Models\Vehicle;
 use App\Repositories\OrderRepository;
@@ -35,13 +36,15 @@ class DespachoController extends Controller
 
     }
 
-    public function create($id)
+    public function create($id) 
     {
         if (request()->ajax()) {
 
             $order = $this->repository->findByIdWithCountSchedule($id);
+            $products=OrderDetail::getProductsOrder($id);
+            $vehicles = Vehicle::getVehicles();
             
-            return response()->view('ajax.create-schedule', compact('order'));
+            return response()->view('ajax.create-schedule', compact('order', 'products', 'vehicles'));
         }
     }
 

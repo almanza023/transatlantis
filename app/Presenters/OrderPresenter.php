@@ -78,6 +78,11 @@ class OrderPresenter extends Presenter
             return $this->textStatus($status, 'deep-purple');
         }
 
+        if ($status == 'Registro de Carga') {
+            return $this->textStatus($status, 'green');
+        }
+        
+
     }
 
     public function typeStatusAprobado()
@@ -101,6 +106,8 @@ class OrderPresenter extends Presenter
         if ($status == 'Compra') {
             return $this->linkStatusCompra();
         }
+
+       
 
         if ($status == 'Agendado') {
             return '';
@@ -186,6 +193,13 @@ class OrderPresenter extends Presenter
         return new HtmlString("<a id='btn_agenda-{$this->model->id_order}' href='#modalDetail' data-toggle='modal'  class='dropdown-item' data-href='" . route('despacho.create', $this->model->id_order) . "' class='dropdown-item'> <i class='fa fa-calendar' data-toggle='tooltip' data-placement='top' data-original-title='Agendar Vehiculo'></i> Agendar Vehiculo</a>");
 
     }
+
+    public function linkStatusCarga()
+    {
+        return new HtmlString("<a id='btn_carga-{$this->model->id_order}' href='#modalDetail' data-toggle='modal'  class='dropdown-item' data-href='" . route('despacho.create', $this->model->id_order) . "' class='dropdown-item'> <i class='fa fa-calendar' data-toggle='tooltip' data-placement='top' data-original-title='Registro de Carga'></i> Registro de Carga</a>");
+
+    }
+
 
     public function linkStatusEntregado()
     {

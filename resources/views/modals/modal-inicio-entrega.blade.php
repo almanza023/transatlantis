@@ -64,18 +64,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name_category_e">Peso Final: </label>
-                                        </div>
-                                        <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
-                                            <div class="form-group">
-                                                <div class="form-line">
-                                                    <input type="number" class="form-control" id="weight" name="weight" step="0.1" min="0">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">

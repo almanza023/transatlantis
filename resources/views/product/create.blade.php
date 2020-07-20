@@ -29,7 +29,7 @@
                   @csrf
                   <fieldset>
                      <legend>
-                        <h5 class="font-bold col-light-green text-center">Informacion Basica</h5>
+                        <h5 class="font-bold col-light-green text-center">Información Basica</h5>
                      </legend>
                      <div class="row">
                      <div class="col-md-6">
@@ -45,7 +45,7 @@
                         <label for="id_type_unit">Tipo Unidad</label>
                         <div class="form-group">
                            <div class="form-line {{ $errors->has('id_type_unit') ? 'error focused' : 'success' }}">
-                              <select class="selectpicker" name="id_type_unit"
+                              <select class="selectpicker" name="id_type_unit" style="width: 100%;"
                                  id="id_type_unit" data-live-search="true" data-show-subtext="true">
                                  <option value="">Escoge una opcion</option>
                                  @foreach ($typeunits as $typeunit)
@@ -132,23 +132,15 @@
                      </div>
                      <div class="row">
                      <div class="col-md-6">
-                        <label for="weight">Peso (unidad:?)</label>
+                        <label for="weight">Precio por Kilogramo</label>
                         <div class="form-group">
-                           <div class="form-line {{ $errors->has('weight') ? 'error focused' : 'success' }}">
-                              <input type="number" class="form-control" name="weight"
-                                 id="weight" value="{{old('weight')}}">
+                           <div class="form-line {{ $errors->has('valorkg') ? 'error focused' : 'success' }}">
+                              <input type="text" class="form-control" name="valorkg"
+                                 id="valorkg" >
                            </div>
                         </div>
                      </div>
-                     <div class="col-md-6">
-                        <label for="volume">Volumen (unidad:?)</label>
-                        <div class="form-group">
-                           <div class="form-line {{ $errors->has('volume') ? 'error focused' : 'success' }}">
-                              <input type="number" class="form-control" name="volume"
-                                 id="volume" value="{{old('volume')}}">
-                           </div>
-                        </div>
-                     </div>
+                     
                      </div>
                   </fieldset>
                   <div class="row">

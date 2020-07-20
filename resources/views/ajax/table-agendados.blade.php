@@ -13,6 +13,7 @@
     </thead>
     <tbody>
         @foreach($orders as $order)
+       
         <tr>
             <td>{{$order->id_order}}</td>
             <td>
@@ -40,13 +41,13 @@
                 <a href='#modalDetail' data-toggle='modal' type='button' data-id="{{ $order->id_order }}"  data-href=" {{  route('orders.detail', $order->id_order) }}" class='btn btn-info btn-sm btn-oblong'><i class='fa fa-eye'  data-toggle='tooltip' data-placement='top' data-original-title='Ver Detalles'></i> </a>
                @if ($order->id_order_status==8)
                 <a id="btninicio-{{ $order->id_order }}" data-target="#modalInicio" data-toggle='modal' class='btn btn-primary btn-sm btn-oblong ' data-id="{{$order->id_order}}" data-status="{{$order->id_order_status}}"><i class='fa fa-car'  data-toggle='tooltip' data-placement='top' data-original-title='Inicio Entrega'></i> </a>
-                <a  id="btnentrega-{{ $order->id_order }}" style="display: none" data-target="#modalEntrega" data-toggle='modal' class='btn btn-success btn-sm btn-oblong' data-id="{{$order->id_order}}" data-status="{{$order->id_order_status}}"><i class='fa fa-save'  data-toggle='tooltip' data-placement='top' data-original-title='Guardar Entrega'></i> </a>
+                <a  id="btnentrega-{{ $order->id_order }}" style="display: none" data-target="#modalEntrega" data-toggle='modal' class='btn btn-success btn-sm btn-oblong' data-id="{{$order->id_order}}" data-status="{{$order->id_order_status}}" data-type="{{$order->type_invoice}}" data-placa="{{$order->placa}}" data-nid="{{$order->nid_driver}}"><i class='fa fa-save'  data-toggle='tooltip' data-placement='top' data-original-title='Guardar Entrega'></i> </a>
                
                    
                @endif
-               @if ($order->id_order_status==11)
+               @if ($order->id_order_status==11 || $order->id_order_status==14)
                
-                <a  id="btnentrega-{{ $order->id_order }}" data-target="#modalEntrega" data-toggle='modal' class='btn btn-success btn-sm btn-oblong' data-id="{{$order->id_order}}" data-status="{{$order->id_order_status}}"><i class='fa fa-save'  data-toggle='tooltip' data-placement='top' data-original-title='Guardar Entrega'></i> </a>
+                <a  id="btnentrega-{{ $order->id_order }}" data-target="#modalEntrega" data-toggle='modal' class='btn btn-success btn-sm btn-oblong' data-id="{{$order->id_order}}" data-status="{{$order->id_order_status}}" data-type="{{$order->type_invoice}}" data-placa="{{$order->placa}}" data-nid="{{$order->nid_driver}}"><i class='fa fa-save'  data-toggle='tooltip' data-placement='top' data-original-title='Guardar Entrega'></i> </a>
                    
                @endif
                

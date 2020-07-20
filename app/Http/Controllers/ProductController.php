@@ -4,17 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
+use App\Models\Load;
+use App\Models\OrderDetail;
+use App\Models\OrderSchedule;
 use App\Models\Price;
 use App\Models\Product;
 use App\Models\TypeUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\OrderRepository;
+
 
 class ProductController extends Controller
 {
-    public function __construct()
+
+    protected $repository;
+    public function __construct(OrderRepository $repository)
     {
         $this->middleware('auth');
+        $this->repository = $repository;
     }
 
     public function index()
@@ -153,4 +161,56 @@ class ProductController extends Controller
         }
         return redirect()->route('product.index')->with('success', 'ESTADO PRODUCTO: ' . $product->name_product . ' ACTUALIZADO CON EXITO!');
     }
+
+    public function consultar($id)
+    {
+        if (request()->ajax()) {
+            $order = $this->repository->findWithDetails($id);
+            $vehicles = DB::table('order_schedules as os')
+            ->join('order_schedule_details as osd', 'os.id_order_schedule', '=','osd.id_order_schedule')
+            ->select('osd.placa', 'osd.nid_driver')
+            ->where('os.id_order', $id)
+            ->get();
+            return response()->view('ajax.create-carga', compact('order', 'vehicles'));
+        }
+    }
+
+    public function saveCarga(Request $request){
+        
+        $products=$request->product_id;
+        for($i=0; $i<count($products); $i++){
+            $load = new Load();
+            $load->id_order=$request->id_order;
+            $load->id_product=$products[$i];
+            $load->amount=$request->amount[$i];
+            $partes = explode("-", $request->vehicle[$i]);
+           
+            $load->placa=$partes[0];
+            $load->nid_driver=$partes[1];
+            $load->save();
+
+
+        }
+        return response()->json(['success'=>'CARGA REGISTRADA EXITOSAMENTE']);
+    }
+
+    public function getProductos(Request $request){
+        $id=$request->id;
+        $placa=$request->placa;
+        $nid=$request->nid;
+        $products=DB::table('loads as l')
+        ->join('products as p', 'l.id_product', '=', 'p.id_product')
+        ->select('p.id_product', 'p.name_product')
+        ->where('l.id_order', $id)
+        ->where('l.placa', $placa)
+        ->where('l.nid_driver', $nid)
+        ->get();
+        return response()->json($products);
+    }
+
+    
+
+
+
+
 }

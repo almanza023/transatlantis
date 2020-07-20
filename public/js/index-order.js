@@ -8,9 +8,18 @@ $(function() {
     showModalReversar();
     clickBtnSaveInvoice();
     clickBtnReversar();
+    clickBtnSaveCarga();
     $('.editar').hide();
     clickBtnFilter2();
 });
+
+const clickBtnSaveCarga = () => {
+    $('#btnsavecarga').click(function(e) {
+        e.preventDefault();
+        saveCarga();
+    });
+}
+
 
 const clickBtnSaveInvoice = () => {
     $('#btn_save-invoice').click(function(e) {
@@ -268,6 +277,37 @@ const savePurchase = () => {
 
 }
 
+const saveCarga = () => {
+    let form = $('#form_carga');
+    $.ajax({
+        data: form.serialize(),
+        url: form.attr('action'),
+        type: form.attr('method'),
+        dataType: 'json',
+        success: function(data) {
+            if (data.success) {
+                success(data.success);
+                form[0].reset();
+                $('#btnsavecarga').hide();
+                $('#btnprint').show();
+                $('#modalDetail').modal('hide');
+                $('#btn_carga-' + data.order).css("display", "none");
+
+            } else {
+                warning(data.warning);
+            }
+        },
+        error: function(data) {
+
+            if (data.status === 422) {
+                let errors = $.parseJSON(data.responseText);
+                addErrorMessage(errors);
+            }
+        }
+    });
+
+}
+
 const saveSchedule = () => {
     let form = $('#form_schedule');
     let fecha = $('#date_departure').val();
@@ -332,17 +372,26 @@ const updateRow = (status, id) => {
         $('#btn_agenda-' + id).show();
         $('#btn_compra-' + id).hide();
         $('#btn_imprimir-' + id).show();
+
         $('#modalDetail').modal('hide');
     }
+
+
+
+
 
     if (status == 'Agendado') {
         $('#td-' + id).addClass('tx-bold tx-indigo');
         $('#btn-ea-' + id).removeAttr('style');
         $('#btn_agenda-' + id).hide();
+        $('#btn_carga-' + id).hide();
+
         $('#modalDetail').modal('hide');
 
 
     }
+
+
 
     $('#td-' + id).html(status);
 
@@ -592,6 +641,11 @@ const showModalVehicles = () => {
             tr = 0;
             $('#placa-999').val("");
             $('#placa-999').selectpicker('refresh');
+            $('#date-order').val($('#date_departure').val());
+            $('#date-time').val($('#time_departure').val());
+            $('#lbl-date').text('Fecha: ' + $('#date_departure').val());
+            $('#lbl-hour').text('Hora: ' + $('#time_departure').val());
+            $('#id-order').val($('#id_order').val());
 
         }
 

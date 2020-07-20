@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Vehicle extends Model
 {
@@ -75,5 +76,11 @@ class Vehicle extends Model
     public function setPlacaAttribute($value)
     {
         $this->attributes['placa'] = strtoupper($value);
+    }
+
+    public static function getVehicles(){
+        return DB::select('SELECT d.first_name, d.last_name, d.nid_driver, v.placa, v.capacity, v.volume, d.first_name, d.last_name  FROM driver_vehicle dv 
+        INNER JOIN drivers d ON d.nid_driver=dv.nid_driver
+        INNER JOIN vehicles v on v.placa=dv.placa');
     }
 }

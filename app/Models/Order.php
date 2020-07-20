@@ -20,6 +20,7 @@ class Order extends Model
         'id_time_payment',
         'date_order',
         'discount',
+        'type_inovice',
         'address_invoice',
         'priority',
     ];
@@ -203,7 +204,7 @@ class Order extends Model
         if(!empty($nid)){
        
         $orders = DB::select('SELECT o.id_order, os.date_departure, os.time_departure,
-        ho.observation, ho.id_order_status, concat(dr.first_name," ",dr.last_name) as conductor, osd.placa, os.description  FROM orders o 
+        ho.observation, ho.id_order_status, o.type_invoice, concat(dr.first_name," ",dr.last_name) as conductor, osd.placa, osd.nid_driver, os.description  FROM orders o 
         INNER JOIN history_orders ho ON ho.id_order=o.id_order
         INNER JOIN order_schedules os ON os.id_order=o.id_order
         INNER JOIN order_schedule_details osd ON osd.id_order_schedule=os.id_order_schedule
@@ -214,7 +215,7 @@ class Order extends Model
         , [$nid, $fecha]);
         }else{
             $orders = DB::select('SELECT o.id_order, os.date_departure, os.time_departure,
-            ho.observation, ho.id_order_status, concat(dr.first_name," ",dr.last_name) as conductor, osd.placa, os.description  FROM orders o 
+            ho.observation, ho.id_order_status, concat(dr.first_name," ",dr.last_name) as conductor, osd.placa, osd.nid_driver, os.description, o.type_invoice  FROM orders o 
             INNER JOIN history_orders ho ON ho.id_order=o.id_order
             INNER JOIN order_schedules os ON os.id_order=o.id_order
             INNER JOIN order_schedule_details osd ON osd.id_order_schedule=os.id_order_schedule
@@ -227,7 +228,7 @@ class Order extends Model
 
     public static function getFilterAgendados($placa, $date1, $date2){
         $orders = DB::select('SELECT o.id_order, os.date_departure, os.time_departure,
-        ho.observation, ho.id_order_status, concat(dr.first_name," ",dr.last_name) as conductor, osd.placa, os.description  FROM orders o 
+        ho.observation, ho.id_order_status, concat(dr.first_name," ",dr.last_name) as conductor, osd.placa, os.description, o.type_invoice  FROM orders o 
         INNER JOIN history_orders ho ON ho.id_order=o.id_order
         INNER JOIN order_schedules os ON os.id_order=o.id_order
         INNER JOIN order_schedule_details osd ON osd.id_order_schedule=os.id_order_schedule

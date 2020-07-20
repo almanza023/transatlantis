@@ -164,6 +164,10 @@ Route::post('reversar', 'OrderController@reversar')->name('reversar');
 
 
 Route::get('aprobar/cotizacion/{id}', 'QuotationController@aprobar')->name('aprobar.quotation');
+Route::get('create/carga/{id}', 'ProductController@consultar')->name('create.carga');
+Route::post('save/carga', 'ProductController@saveCarga')->name('save.carga');
+
+Route::get('products/order', 'ProductController@getProductos');
 
 
 Route::post('roles/store', 'RoleController@store')->name('roles.store');

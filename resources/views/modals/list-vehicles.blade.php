@@ -18,8 +18,12 @@
                         <div class="col-md-12">
     
                             <div class="well">
-                               
+                               <label for="" id="lbl-date">Fecha</label>
+                               <label for="" id="lbl-hour">Hora</label>
+                               <input type="hidden" class="form-control" name="date-order" id="date-order">
+                               <input type="hidden" class="form-control" name="date-time" id="date-time">
                             </div>
+
                          
                         </div>   
     
@@ -59,7 +63,7 @@
     
     
                         <div class="col-md-12">
-                            <label for="description_carga-999">Descripcion de Carga</label>
+                            <label for="description_carga-999">Descripción de Carga</label>
                             <div class="form-group">
                                 <div class="">
                                     <textarea class="form-control" id="description_carga-999" name="description_carga[]"

@@ -17,8 +17,8 @@
 						<div class="card-body">
 							<div class="table-responsive">
 								<table
-									class="table table-bordered table-striped table-hover js-basic-example dataTable"
-									id="table_munipalities" style="width: 100%">
+									class="table table-bordered table-striped table-hover"
+									 style="width: 100%">
 									<thead>
 										<tr>
 											

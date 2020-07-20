@@ -142,6 +142,7 @@
 										<tr>
 											<th>#</th>
 											<th class="text-center">Producto</th>											
+											<th class="text-center">Unidad</th>											
 											<th class="text-center">Cantidad</th>
 											<th class="text-center">Precio Unitario</th>
 											<th class="text-center">Total</th>
@@ -155,7 +156,15 @@
 							
 							<div class="col-md-12 col-sm-3">
 								<input id="total_items" type="text"  class="form-control" name="total_items" value="Total: $0.0" readonly>
-							</div>				
+							</div>		
+							<br>
+							<div class="col-md-12">
+								<label for="type_invoice">Tipo Cobro:</label>
+								<select name="type_invoice" id="type_invoice" class="form-control">
+									<option value="1">Normal</option>
+									<option value="2">Por peso</option>
+								</select>
+							</div>		
 	
 							<br>
 							<button id="btnguardar" type="button" class="btn btn-success">
@@ -182,96 +191,7 @@
 	
 	<input id="list_products" type="hidden" value='@json($products)'>
 
-	<div class="modal fade" id="modalProduct" tabindex="-1" role="dialog" >
-		<div class="modal-dialog modal-lg bg-warning" role="document">
-			<div class="modal-header pd-x-20 bg-warning">
-				<h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">LISTADO DE PRODUCTOS</h6>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-				</button>
-			 </div>
-			<div class="modal-content" >
-				<div class="modal-body" >
-					<div class="row">
-						<div class="col-md-12">
-							<div class="table-responsive">
-								<form id="form_items"> 
-						   
-									<table class="table" style="width: 650px;">
-										<tr>
-											<th>PRODUCTO</th>
-											<td>
-											  <select class="form-control show-tick"
-											  name="id_product[]" id="id_product-999"
-											  data-live-search="true"
-											  onchange="changePrice(this);">
-											  <option value="">Productos</option>
-											  @foreach ($products as $product)
-											  <option value="{{$product->id_product}}">
-												  {{$product->name_product.' - '.$product->typeUnit->type_unit}}</option>
-											  @endforeach
-										  </select>
-											</td>
-										</tr>
-										<tr>
-											<th>CANTIDAD</th>
-			  
-											<td>
-											  <input type="number" class="form-control"
-											  name="amount[]" id="amount-999">
-											</td>
-										</tr>
-										<tr>
-											<th>PORCENTAJE</th>
-											<td>
-												<select name="porcentage_id" id="porcentage_id" class="form-control">
-													<option value="0">Seleccione</option>
-													@foreach ($porcentages as $item)
-													<option value="{{ $item->id }}">{{ $item->valor }}%</option>	
-													@endforeach
-												</select>
-											</td>
-										</tr>	
-										</tr>
-										<tr>
-											<th>PRECIO PREDETERMINADO</th>
-											<td>
-												<select name="precio_db" id="precio_db" class="form-control">
-													<option value="1">SI</option>
-													<option value="2" selected>NO</option>
-												</select>
-											</td>
-										</tr>
-										<tr>
-											<th>PRECIO</th>
-											<td><input type="number" class="form-control"
-											  name="unit_price[]" id="unit_price-999" ></td>
-										</tr>
-										<tr>
-											<td colspan="2">
-											  <button id="btnAdd" type="button" class="btn btn-success">
-												  <i class="fa fa-save"></i>
-												  <span> AÑADIR</span>
-											  </button> 
-											</td>
-										</tr>
-									  </table>                         
-					 
-								  </form> 
-							</div>
-							</div>
-					</div>
-				</div>
-	
-				   
-	
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-close"></i> CERRAR</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	@include('modals.list-products')
 	
 	
 	

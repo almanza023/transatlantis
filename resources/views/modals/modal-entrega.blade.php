@@ -17,6 +17,11 @@
 
                                     <input type="hidden" name="order_id" id="order_id">
                                     <input type="hidden" name="id_order_status" id="id_order_status1">
+                                    <input type="hidden" name="placa" id="placa1">
+                                    <input type="hidden" name="nid_driver" id="nid_driver1">
+                                    
+                                    
+                                  
                                     <input type="hidden" id="dateAA" value="<?php echo date('Y-m-d');?>">
                                     <div class="row">
                                         <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -65,6 +70,22 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                            <label for="name_category_e">Producto: </label>
+                                        </div>
+                                        <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                   
+                                                   <select name="id_product" id="id_product" class="form-control">
+                                                    <option value="0">Seleccione</option>
+                                                   </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="resultado">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                             <label for="name_category_e">Peso Final: </label>
                                         </div>
                                         <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
@@ -75,6 +96,22 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                   
+
+                                </div>
+                                <div class="row" id="mostrarTicket">
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                        <label for="name_category_e">Ticket: </label>
+                                    </div>
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control" id="ticket" name="ticket" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">

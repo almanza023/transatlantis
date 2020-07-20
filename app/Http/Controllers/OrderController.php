@@ -9,6 +9,7 @@ use App\Models\Departament;
 use App\Models\Driver;
 use App\Models\DriverVehicle;
 use App\Models\HistoryOrder;
+use App\Models\Load;
 use App\Models\Order;
 use App\Models\OrderDelivery;
 use App\Models\OrderDetail;
@@ -209,6 +210,7 @@ class OrderController extends Controller
         $order->date_order = Carbon::now();
         $order->priority = $request->priority;
         $order->address_invoice = $request->address_invoice;
+        $order->type_invoice = $request->type_invoice;
 
         return $order;
 
@@ -219,12 +221,14 @@ class OrderController extends Controller
         $products = $request->id_product;
         $amounts = $request->amount;
         $unit_prices = $request->unit_price;
+        $percentages = $request->porcentage_id;
 
         for ($i = 0; $i < count($products); $i++) {
             $order->orderDetails()->create([
                 'id_product' => $products[$i],
                 'amount' => $amounts[$i],
                 'unit_price' => $unit_prices[$i],
+                'percentage' => $percentages[$i],
             ]);
         }
     }
@@ -597,31 +601,96 @@ class OrderController extends Controller
           
 
         }else {
+
+            $resul=OrderDetail::where('id_order', $request->order_id)
+            ->where('id_product', $request->id_product)
+            ->first();
+
+            $sum=OrderDelivery::where('id_order', $request->order_id)
+            ->where('id_product', $request->id_product)
+            ->sum('weight');
+
+            $total=$resul->amount;
+
+            $res=$total-($sum);
+           
+
+            if($res>=0){
             $order= new OrderDelivery();
             $order->id_order=$request->order_id;
+            $order->id_product=$request->id_product;
+            $order->placa=$request->placa;
+            $order->nid_driver=$request->nid_driver;
             $order->status=$request->status1;
             $order->date=$request->date3;
             $order->weight=$request->weight1;
             $order->hour=$request->hour1;
+            $order->ticket=$request->ticket;
             $order->observation=$request->observation1;
             $order->save();
-    
-            $history =  DB::table('order_schedules')->where('id_order',$request->order_id)
-            ->where('status', 1)->update(['status' => 0])  ;
+
+            if($request->status1==2){
+                $history = new  HistoryOrder(); 
+                $history->id_order=$request->order_id;      
+                $history->id_order_status=14;
+                $history->observation='Entregado Parcialmente';
+                $history->status=1;        
+                $history->save();
+
+                
+
+                DB::commit();
+                return response()->json(['success' => ' SE REGISTRO LA ENTREGA DE  '.$request->weight1.' RESTANTES: '.$res. ' TOTAL: '.$total]); 
+
+            }else {
+
+                $history = new  HistoryOrder(); 
+                $history->id_order=$request->order_id;      
+                $history->id_order_status=9;
+                $history->observation='Entregado';
+                $history->status=1;        
+                $history->save();   
+
+                    $history =  DB::table('order_schedules')->where('id_order',$request->order_id)
+                    ->where('status', 1)->update(['status' => 0])  ;
+
+                    $history = HistoryOrder::where('id_order',$request->order_id)
+                    ->where('id_order_status', 11)
+                    ->orWhere('id_order_status', 14)
+                    ->update(['status' => 0])  ;
+
+                    $viajes=OrderDelivery::where('id_order', $request->order_id)
+                    ->where('id_product', $request->id_product)
+                    ->where('status', '1')
+                    ->sum('weight');                   
+
+                   
+                    $det=OrderDetail::where('id_order', $request->order_id)
+                    ->where('id_product', $request->id_product)->get();
+
+                    $flete=($viajes*$det[0]->unit_price)*($det[0]->percentage/100);
+                  
+                    $load=Load::where('id_order', $request->order_id)
+                    ->where('id_product', $request->id_product)
+                    ->where('placa', $request->placa)->update(['flete'=>$flete, 'ticket'=>$request->ticket, 'carried'=>$viajes]);
+                    
+                    DB::commit();
+                    return response()->json(['success' => ' ENTREGA REGISTRADA EXITOSAMENTE']); 
+
+                    
               
+            }
+    
             
-            $history = new  HistoryOrder(); 
-            $history->id_order=$request->order_id;      
-            $history->id_order_status=9;
-            $history->observation='Entregado';
-            $history->status=1;        
-            $history->save();   
+         } else {
+            return response()->json(['warning' => ' NO SE PUEDE SOPREPASAR EL TOTAL SOLICITADO']); 
+          }    
+            
+            
     
-            $history = HistoryOrder::where('id_order',$request->order_id)
-            ->where('id_order_status', 11)->update(['status' => 0])  ;
-              
-            DB::commit();
-            return response()->json(['success' => ' ENTREGA REGISTRADA EXITOSAMENTE']);      
+            
+            
+                 
         }
         
            

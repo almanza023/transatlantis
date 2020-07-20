@@ -77,6 +77,7 @@
 <script src="{{asset('js/datatable.js')}}"></script>
 <script src="{{asset('js/fecha.js')}}"></script>
 
+
 <script>
 	var x = 0;
 	let vehicles = $('#list_vehicles').val();
