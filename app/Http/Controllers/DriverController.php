@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DriverRequest;
 use App\Http\Requests\DriverUpdateRequest;
 use App\Models\Driver;
+use App\Models\DriverVehicle;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -146,4 +147,18 @@ class DriverController extends Controller
         }
         return redirect()->route('driver.index')->with('success', 'ESTADO CONDUCTOR: ' . $driver->name_complete . ' ACTUALIZADO CON EXITO!');
     }
+
+    public function viewLiquidacion()
+    {
+        $drivers=DriverVehicle::DriverVehicle();
+        return view('liquidacion.reporte', compact('drivers'));
+    }
+
+    public function consutaLiquidacion(Request $request)
+    {
+        $liquidaciones=DriverVehicle::getLiquidacion($request->nid_driver, $request->date1, $request->date2);
+        
+        return response()->view('ajax.table-liquidaciones', compact('liquidaciones'));
+    }
+    
 }

@@ -209,7 +209,7 @@ class Order extends Model
         INNER JOIN order_schedules os ON os.id_order=o.id_order
         INNER JOIN order_schedule_details osd ON osd.id_order_schedule=os.id_order_schedule
         INNER JOIN drivers dr on dr.nid_driver=osd.nid_driver        
-        where (ho.id_order_status=8 or ho.id_order_status=11) and dr.nid_driver=?  AND ho.`status`=1
+        where (ho.id_order_status=8 or ho.id_order_status=11) and dr.nid_driver=?  AND ho.`status`=1 AND osd.status=2
         and os.date_departure=?
         ORDER BY os.id_order desc'
         , [$nid, $fecha]);
@@ -220,7 +220,7 @@ class Order extends Model
             INNER JOIN order_schedules os ON os.id_order=o.id_order
             INNER JOIN order_schedule_details osd ON osd.id_order_schedule=os.id_order_schedule
             INNER JOIN drivers dr on dr.nid_driver=osd.nid_driver
-            WHERE (ho.id_order_status=8 or ho.id_order_status=11) AND ho.`status`=1 and os.date_departure=? ORDER BY os.id_order desc', [$fecha]);
+            WHERE (ho.id_order_status=8 or ho.id_order_status=11) AND ho.`status`=1 and os.date_departure=? AND osd.status=2 ORDER BY os.id_order desc', [$fecha]);
         }
 
         return $orders;
@@ -233,7 +233,7 @@ class Order extends Model
         INNER JOIN order_schedules os ON os.id_order=o.id_order
         INNER JOIN order_schedule_details osd ON osd.id_order_schedule=os.id_order_schedule
         INNER JOIN drivers dr on dr.nid_driver=osd.nid_driver
-        WHERE (ho.id_order_status=8 or ho.id_order_status=11)  and osd.placa=?  AND ho.`status`=1
+        WHERE (ho.id_order_status=8 or ho.id_order_status=11)  and osd.placa=? AND osd.status=2  AND ho.`status`=1
         and os.date_departure>=? and os.date_departure<=?
          group by o.id_order ORDER BY os.date_departure desc'
         , [$placa, $date1, $date2]);

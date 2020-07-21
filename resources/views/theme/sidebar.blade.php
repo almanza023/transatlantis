@@ -193,6 +193,7 @@
           </a>
           <div class="sub-item">
             <ul>
+              <li><a href="{{ route('liquidacion.index') }}">Liquidación Conductores</a></li>
               <li><a href="{{ route('despacho.index') }}">Agenda</a></li>
               <li><a href="{{ route('orders.report') }}">Pedidos</a></li>
               <li><a href="{{ route('entregas.conductor') }}">Entregas Por Conductor</a></li>

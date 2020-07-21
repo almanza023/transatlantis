@@ -83,10 +83,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="resultado">
+                                    <div id="resultado2">
                                     <div class="row">
                                         <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                            <label for="name_category_e">Peso Final: </label>
+                                            <label for="name_category_e">Cantidad/Peso: </label>
                                         </div>
                                         <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
                                             <div class="form-group">
@@ -100,7 +100,10 @@
                                    
 
                                 </div>
-                                <div class="row" id="mostrarTicket">
+                                <div  id="mostrarTicket">
+
+                               
+                                <div class="row">
                                     <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                         <label for="name_category_e">Ticket: </label>
                                     </div>
@@ -112,6 +115,23 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row" >
+                                    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                        <label for="name_category_e">Cerrar Entrega: </label>
+                                    </div>
+                                    <div class="col-lg-9 col-md-10 col-sm-8 col-xs-7">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                               <select name="cerrar" id="cerrar" class="form-control">
+                                                   <option value="2">NO</option>
+                                                   <option value="1">SI</option>
+                                               </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-2 col-sm-4 col-xs-5 form-control-label">

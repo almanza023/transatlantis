@@ -146,9 +146,11 @@ const saveInicio = () => {
                     warning(data.warning);
                 } else {
                     success(data.success)
+                    window.location.href = '../agendados';
                     updateRow('Inicio Entrega', id);
                     $("#modalInicio").modal('hide'); //ocultamos el modal
                     form[0].reset();
+
 
                 }
 
@@ -181,6 +183,15 @@ const saveEntrega = () => {
     } else if (!$('#hour1').val().length > 0) {
         swal('Datos Básicos', 'Campo Hora Está Vacío', 'warning');
 
+    } else if ($('#type_invoice').val() == 2) {
+        if (!$('#weigth1').val().length > 0) {
+            swal('Datos Básicos', 'Campo Peso Está Vacío', 'warning');
+        }
+
+    } else if ($('#status').val() == 1) {
+        if (!$('#ticket').val().length > 0) {
+            swal('Datos Básicos', 'Campo Ticket Está Vacío', 'warning');
+        }
     } else {
         $.ajax({
             data: form.serialize(),

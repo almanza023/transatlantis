@@ -169,6 +169,12 @@ Route::post('save/carga', 'ProductController@saveCarga')->name('save.carga');
 
 Route::get('products/order', 'ProductController@getProductos');
 
+Route::get('report/liquidacion', 'DriverController@viewLiquidacion')->name('liquidacion.index');
+Route::post('consulta/liquidacion', 'DriverController@consutaLiquidacion')->name('liquidacion.show');
+
+
+
+
 
 Route::post('roles/store', 'RoleController@store')->name('roles.store');
 

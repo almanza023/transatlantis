@@ -43,7 +43,7 @@
                                             <select name="porcentaje" id="porcentaje" class="form-control">
                                                 <option value="0">Ninguno</option>
                                                 @foreach ($porcentages as $item)
-                                                <option value="{{ $item->id }}">{{ $item->valor }}%</option>	
+                                                <option value="{{ $item->valor }}">{{ $item->valor }}%</option>	
                                                 @endforeach
                                             </select>
                                         </td>

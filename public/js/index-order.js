@@ -291,7 +291,7 @@ const saveCarga = () => {
                 $('#btnsavecarga').hide();
                 $('#btnprint').show();
                 $('#modalDetail').modal('hide');
-                $('#btn_carga-' + data.order).css("display", "none");
+                updateRow('Agendado', data.order);
 
             } else {
                 warning(data.warning);
@@ -326,7 +326,7 @@ const saveSchedule = () => {
                     $('#btnsaveschedule').hide();
                     $('#modalDetail').modal('hide');
                     //$('#btnprint').show();
-                    updateRow(data.status, data.order)
+                    updateRow('Agendado', data.order)
                 } else {
                     warning(data.warning);
                 }
@@ -372,20 +372,14 @@ const updateRow = (status, id) => {
         $('#btn_agenda-' + id).show();
         $('#btn_compra-' + id).hide();
         $('#btn_imprimir-' + id).show();
-
         $('#modalDetail').modal('hide');
     }
-
-
-
-
 
     if (status == 'Agendado') {
         $('#td-' + id).addClass('tx-bold tx-indigo');
         $('#btn-ea-' + id).removeAttr('style');
         $('#btn_agenda-' + id).hide();
-        $('#btn_carga-' + id).hide();
-
+        $('#btn_carga-' + id).hidde();
         $('#modalDetail').modal('hide');
 
 

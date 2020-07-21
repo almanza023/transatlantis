@@ -585,13 +585,12 @@ class OrderController extends Controller
             $order->save();
     
             $history = HistoryOrder::where('id_order',$request->id_order)
-            ->where('id_order_status', 8)->update(['status' => 0])  ;
-              
+            ->where('id_order_status', 8)->update(['status' => 0])  ;            
             
             $history = new  HistoryOrder(); 
             $history->id_order=$request->id_order;      
             $history->id_order_status=11;
-            $history->observation='Inicio Entrega';
+            $history->observation='Proceso de Entrega';
             $history->status=1;
             $history->save();   
 
@@ -602,6 +601,10 @@ class OrderController extends Controller
 
         }else {
 
+            if(empty($request->weight1) && $request->type_inovice==2){
+                return response()->json(['warning' => 'CAMPO CANTIDAD/PESO ESTA VACIO']); 
+            }
+            //OBTENER EL PRODUCTO ID
             $resul=OrderDetail::where('id_order', $request->order_id)
             ->where('id_product', $request->id_product)
             ->first();
@@ -611,8 +614,7 @@ class OrderController extends Controller
             ->sum('weight');
 
             $total=$resul->amount;
-
-            $res=$total-($sum);
+            $res=$total-($sum)-$request->weight1;
            
 
             if($res>=0){
@@ -626,42 +628,55 @@ class OrderController extends Controller
             $order->weight=$request->weight1;
             $order->hour=$request->hour1;
             $order->ticket=$request->ticket;
-            $order->observation=$request->observation1;
-            $order->save();
+            $order->observation=$request->observation1;         
 
             if($request->status1==2){
-                $history = new  HistoryOrder(); 
-                $history->id_order=$request->order_id;      
-                $history->id_order_status=14;
-                $history->observation='Entregado Parcialmente';
-                $history->status=1;        
-                $history->save();
-
                 
+                $order->save();
+                $schedule=OrderSchedule::where('id_order', $request->order_id)->get();
+                $history = OrderScheduleDetail::where('id_order_schedule', $schedule[0]->id_order_schedule)
+                ->where('placa', $request->placa)->where('nid_driver', $request->nid_driver)->update(['status' => 1])  ;
 
+                $sum=OrderDelivery::where('id_order', $request->order_id)
+                ->where('id_product', $request->id_product)
+                ->sum('weight');    
+                $total=$resul->amount;    
+                $res=$total-($sum);
                 DB::commit();
-                return response()->json(['success' => ' SE REGISTRO LA ENTREGA DE  '.$request->weight1.' RESTANTES: '.$res. ' TOTAL: '.$total]); 
+               
+                return response()->json(['success' => ' SE REGISTRO LA ENTREGADAS '.$sum.' RESTANTES: '.$res. ' TOTAL: '.$total]); 
+              
+
 
             }else {
-
+                if(empty($request->ticket)){
+                    return response()->json(['warning' => 'CAMPO TICKET ESTA VACIO']); 
+                }
+                $order->save();
                 $history = new  HistoryOrder(); 
                 $history->id_order=$request->order_id;      
                 $history->id_order_status=9;
                 $history->observation='Entregado';
                 $history->status=1;        
-                $history->save();   
+                $history->save();                   
+                $schedule=OrderSchedule::where('id_order', $request->order_id)->get();
+               
 
-                    $history =  DB::table('order_schedules')->where('id_order',$request->order_id)
-                    ->where('status', 1)->update(['status' => 0])  ;
+                $update = OrderScheduleDetail::where('id_order_schedule', $schedule[0]->id_order_schedule)
+                ->where('placa', $request->placa)->where('nid_driver', $request->nid_driver)->update(['status' => 1])  ;
 
-                    $history = HistoryOrder::where('id_order',$request->order_id)
+                    if($request->cerrar==1){
+                        $history =  DB::table('order_schedules')->where('id_order',$request->order_id)
+                        ->where('status', 1)->update(['status' => 0])  ;
+
+                        $history = HistoryOrder::where('id_order',$request->order_id)
                     ->where('id_order_status', 11)
                     ->orWhere('id_order_status', 14)
                     ->update(['status' => 0])  ;
+                    }                 
 
                     $viajes=OrderDelivery::where('id_order', $request->order_id)
-                    ->where('id_product', $request->id_product)
-                    ->where('status', '1')
+                    ->where('id_product', $request->id_product)                    
                     ->sum('weight');                   
 
                    
@@ -672,28 +687,23 @@ class OrderController extends Controller
                   
                     $load=Load::where('id_order', $request->order_id)
                     ->where('id_product', $request->id_product)
-                    ->where('placa', $request->placa)->update(['flete'=>$flete, 'ticket'=>$request->ticket, 'carried'=>$viajes]);
+                    ->where('placa', $request->placa)->update(['flete'=>$flete, 'ticket'=>$request->ticket, 'carried'=>$viajes, 'status'=>2]);
                     
+                    if($viajes!=$total){
+                        return response()->json(['warning' => ' NO SE HA COMPLETADO EL TOTAL SOLICITADO']); 
+                    }
                     DB::commit();
                     return response()->json(['success' => ' ENTREGA REGISTRADA EXITOSAMENTE']); 
-
-                    
+                   
               
             }
     
             
          } else {
             return response()->json(['warning' => ' NO SE PUEDE SOPREPASAR EL TOTAL SOLICITADO']); 
-          }    
-            
-            
-    
-            
-            
-                 
-        }
-        
-           
+          }                
+               
+        }         
 
         } catch (\Exception $ex) {
             DB::rollback();
